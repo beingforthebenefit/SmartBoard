@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Text } from '@nextui-org/react';
 
 const Clock = () => {
     const [time, setTime] = useState(new Date());
@@ -12,8 +13,8 @@ const Clock = () => {
 
     return (
         <div>
-            <h1>{time.toLocaleTimeString()}</h1>
-            <h2>{time.toDateString()}</h2>
+            <Text h1>{time.toLocaleTimeString()}</Text>
+            <Text h2>{time.toDateString()}</Text>
         </div>
     );
 }
