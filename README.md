@@ -1,3 +1,6 @@
+# SmartBoard
+A customizable display for photos, calendar, news, weather and more
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
