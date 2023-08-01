@@ -43,20 +43,20 @@ const Weather = () => {
   }
 
   return (
-    <Container>
-      <Text h1 style={{textAlign: 'center'}}>
+    <Container className='weatherContainer'>
+      <Text h1>
         {Math.round(weatherData.current.temp)} °F {WeatherEmojis[weatherData.current.weather[0].main]}
-        <Text p>↑: {Math.round(weatherData.daily[0].temp.max)} °F, ↓: {Math.round(weatherData.daily[0].temp.min)} °F</Text>
+        <Text h3>{weatherData.current.weather[0].main}</Text>
+        <Text className='high-low'>↑: {Math.round(weatherData.daily[0].temp.max)} °F, ↓: {Math.round(weatherData.daily[0].temp.min)} °F</Text>
       </Text>
       <Divider y={2} />
-      <Text h2>4-day forecast:</Text>
       <Grid.Container gap={2} justify="center">
         {weatherData.daily.slice(1).map((forecast, i) => (
           <Grid xs={6} sm={3} md={3} lg={3} xl={3} key={i}>
             <Card>
-              <Row justify="center">
-                <Text p>{moment.unix(forecast.dt).format('ddd')} {WeatherEmojis[forecast.weather[0].main]}
-                  <Text p>↑: {Math.round(forecast.temp.max)} °F, ↓: {Math.round(forecast.temp.min)}°</Text>
+              <Row justify="center" className='dayContainer'>
+                <Text>{moment.unix(forecast.dt).format('ddd')} {WeatherEmojis[forecast.weather[0].main]}
+                  <Text>↑: {Math.round(forecast.temp.max)} °F, ↓: {Math.round(forecast.temp.min)}°</Text>
                 </Text>
               </Row>
             </Card>
