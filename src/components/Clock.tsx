@@ -12,7 +12,7 @@ const Clock = () => {
     }, []);
 
     return (
-        <div>
+        <div className="clock-wrapper">
             <Text h1>{time.toLocaleTimeString()}</Text>
             <Text h2>{time.toDateString()}</Text>
         </div>
