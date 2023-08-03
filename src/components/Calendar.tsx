@@ -9,6 +9,8 @@ type Event = { start: Date; end: Date; title: string; allDay: boolean; resource:
 // Setup the localizer by providing the moment Object
 const localizer = momentLocalizer(moment);
 
+const colors = ['red', 'blue', 'green', 'grey', 'orange', 'purple', 'pink', 'brown', 'yellow', 'black'];
+
 const Calendar = ({ icsUrls }) => {
   const [events, setEvents] = useState<Event[]>([]);
 
@@ -22,12 +24,12 @@ const Calendar = ({ icsUrls }) => {
     .then(responses => {
       let allEvents: Event[] = [];
 
-      responses.forEach((response, idx) => {
+      responses.forEach((response, index) => {
         const jcalData = ICAL.parse(response);
         const comp = new ICAL.Component(jcalData);
         const vevents = comp.getAllSubcomponents('vevent');
 
-        vevents.forEach((vevent) => {
+        vevents.forEach((vevent: any) => {
           const event = new ICAL.Event(vevent);
 
           if(event.startDate && event.endDate) {
@@ -36,8 +38,7 @@ const Calendar = ({ icsUrls }) => {
               end: event.endDate.toJSDate(),
               title: event.summary,
               allDay: event.startDate.icaltype === 'date',
-              // resource: { color: getColorByIndex(idx) }, // assume there is a getColorByIndex function to get color
-              resource: { color: 'red' },
+              resource: { color: colors[index % colors.length] },
             });
           }
         });
