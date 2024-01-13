@@ -5,7 +5,7 @@ import moment from 'moment';
 import WeatherEmojis from './WeatherEmojis';
 
 const API_KEY = process.env.REACT_APP_OPEN_WEATHER_MAP_API_KEY;
-const API_URL = `https://api.openweathermap.org/data/2.5/onecall?lat=37.7749&lon=-122.4194&exclude=minutely,alerts&appid=${API_KEY}&units=imperial`;
+const API_URL = `${process.env.REACT_APP_OPEN_WEATHER_MAP_API_URL}?lat=37.7749&lon=-122.4194&exclude=minutely,alerts&appid=${API_KEY}&units=imperial`;
 
 type WeatherData = {
   current: {
