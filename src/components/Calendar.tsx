@@ -1,18 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar';
-import moment from 'moment';
-import ICAL from 'ical.js';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
+import React, { useEffect, useState } from 'react'
+import { Calendar as BigCalendar, momentLocalizer } from 'react-big-calendar'
+import moment from 'moment'
+import ICAL from 'ical.js'
+import 'react-big-calendar/lib/css/react-big-calendar.css'
 
-type Event = { start: Date; end: Date; title: string; allDay: boolean; resource: { color: string; }; }
+type Event = {
+  start: Date
+  end: Date
+  title: string
+  allDay: boolean
+  resource: {
+    color: string
+  }
+}
 
 // Setup the localizer by providing the moment Object
-const localizer = momentLocalizer(moment);
+const localizer = momentLocalizer(moment)
 
-const colors = ['red', 'blue', 'green', 'grey', 'orange', 'purple', 'pink', 'brown', 'yellow', 'black'];
+const colors = ['red', 'blue', 'green', 'grey', 'orange', 'purple', 'pink', 'brown', 'yellow', 'black']
 
 const Calendar = ({ icsUrls }) => {
-  const [events, setEvents] = useState<Event[]>([]);
+  const [events, setEvents] = useState<Event[]>([])
 
   useEffect(() => {
     Promise.all(
@@ -22,15 +30,15 @@ const Calendar = ({ icsUrls }) => {
       )
     )
     .then(responses => {
-      let allEvents: Event[] = [];
+      let allEvents: Event[] = []
 
       responses.forEach((response, index) => {
-        const jcalData = ICAL.parse(response);
-        const comp = new ICAL.Component(jcalData);
-        const vevents = comp.getAllSubcomponents('vevent');
+        const jcalData = ICAL.parse(response)
+        const comp = new ICAL.Component(jcalData)
+        const vevents = comp.getAllSubcomponents('vevent')
 
         vevents.forEach((vevent: any) => {
-          const event = new ICAL.Event(vevent);
+          const event = new ICAL.Event(vevent)
 
           if(event.startDate && event.endDate) {
             allEvents.push({
@@ -39,21 +47,21 @@ const Calendar = ({ icsUrls }) => {
               title: event.summary,
               allDay: event.startDate.icaltype === 'date',
               resource: { color: colors[index % colors.length] },
-            });
+            })
           }
-        });
-      });
+        })
+      })
 
-      setEvents(allEvents);
+      setEvents(allEvents)
     })
-    .catch(err => console.error(err));
-  }, [icsUrls]);
+    .catch(err => console.error(err))
+  }, [icsUrls])
 
-  const minTime = new Date();
-  minTime.setHours(8, 0, 0);
+  const minTime = new Date()
+  minTime.setHours(8, 0, 0)
 
-  const maxTime = new Date();
-  maxTime.setHours(20, 0, 0);
+  const maxTime = new Date()
+  maxTime.setHours(20, 0, 0)
 
   return (
     <div style={{ height: '560px' }}>
@@ -78,7 +86,7 @@ const Calendar = ({ icsUrls }) => {
         })}
       />
     </div>
-  );
-};
+  )
+}
 
-export default Calendar;
+export default Calendar

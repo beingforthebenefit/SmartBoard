@@ -1,39 +1,39 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { Text, Grid, Card } from '@nextui-org/react';
+import React, { useEffect, useMemo, useState } from 'react'
+import { Text, Grid, Card } from '@nextui-org/react'
 
 const SoberCounter = () => {
-  const soberDate = useMemo(() => new Date('2022-07-19 22:57:00'), []);
-  const [timePassed, setTimePassed] = useState(Date.now() - soberDate.getTime());
+  const soberDate = useMemo(() => new Date('2022-07-19 22:57:00'), [])
+  const [timePassed, setTimePassed] = useState(Date.now() - soberDate.getTime())
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimePassed(Date.now() - soberDate.getTime());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [soberDate]);
+      setTimePassed(Date.now() - soberDate.getTime())
+    }, 1000)
+    return () => clearInterval(timer)
+  }, [soberDate])
 
   const calculateTime = (startDate: Date, currentDate: Date) => {
-    let years = currentDate.getFullYear() - startDate.getFullYear();
-    let months = currentDate.getMonth() - startDate.getMonth();
-    let days = currentDate.getDate() - startDate.getDate();
+    let years = currentDate.getFullYear() - startDate.getFullYear()
+    let months = currentDate.getMonth() - startDate.getMonth()
+    let days = currentDate.getDate() - startDate.getDate()
 
     if (days < 0) {
-      months--;
-      const previousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 0);
-      days += previousMonth.getDate();
+      months--
+      const previousMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 0)
+      days += previousMonth.getDate()
     }
 
     if (months < 0) {
-      years--;
-      months += 12;
+      years--
+      months += 12
     }
 
-    return { years, months, days };
-  };
+    return { years, months, days }
+  }
 
-  const { years, months, days } = calculateTime(soberDate, new Date());
+  const { years, months, days } = calculateTime(soberDate, new Date())
 
-  const hours = Math.floor(timePassed / (1000 * 60 * 60)) % 24;
+  const hours = Math.floor(timePassed / (1000 * 60 * 60)) % 24
 
   return (
     <div>
@@ -65,7 +65,7 @@ const SoberCounter = () => {
         </Grid>
       </Grid.Container>
     </div>
-  );
-};
+  )
+}
 
-export default SoberCounter;
+export default SoberCounter

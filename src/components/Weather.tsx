@@ -1,28 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Grid, Card, Text, Divider, Row } from '@nextui-org/react';
-import axios from 'axios';
-import moment from 'moment';
-import WeatherEmojis from './WeatherEmojis';
+import React, { useState, useEffect } from 'react'
+import { Container, Grid, Card, Text, Divider, Row } from '@nextui-org/react'
+import axios from 'axios'
+import moment from 'moment'
+import WeatherEmojis from './WeatherEmojis'
 
-const API_KEY = process.env.REACT_APP_OPEN_WEATHER_MAP_API_KEY;
-const API_URL = `${process.env.REACT_APP_OPEN_WEATHER_MAP_API_URL}?lat=37.7749&lon=-122.4194&exclude=minutely,alerts&appid=${API_KEY}&units=imperial`;
+const API_KEY = process.env.REACT_APP_OPEN_WEATHER_MAP_API_KEY
+const API_URL = `${process.env.REACT_APP_OPEN_WEATHER_MAP_API_URL}?lat=37.7749&lon=-122.4194&exclude=minutely,alerts&appid=${API_KEY}&units=imperial`
 
 type WeatherData = {
   current: {
-    temp: number;
-    weather: [{ main: string }];
-  };
+    temp: number
+    weather: [{ main: string }]
+  }
   daily: [
     {
-      dt: number;
-      temp: { min: number; max: number };
-      weather: [{ main: string }];
+      dt: number
+      temp: {
+        min: number
+        max: number
+      }
+      weather: [{ main: string }]
     }
-  ];
-} | null;
+  ]
+} | null
 
 const Weather = () => {
-  const [weatherData, setWeatherData] = useState<WeatherData>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData>(null)
 
   useEffect(() => {
     axios.get(API_URL)
@@ -30,16 +33,16 @@ const Weather = () => {
         const processedData = {
           current: res.data.current,
           daily: res.data.daily.slice(0, 5)
-        };
-        setWeatherData(processedData);
+        }
+        setWeatherData(processedData)
       })
       .catch(err => {
-        console.log(err);
-      });
-  }, []);
+        console.log(err)
+      })
+  }, [])
 
   if (!weatherData) {
-    return <p>Loading...</p>;
+    return <p>Loading...</p>
   }
 
   return (
@@ -64,8 +67,8 @@ const Weather = () => {
         ))}
       </Grid.Container>
     </Container>
-  );
+  )
   
-};
+}
 
-export default Weather;
+export default Weather

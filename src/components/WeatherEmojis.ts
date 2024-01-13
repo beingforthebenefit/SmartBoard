@@ -1,8 +1,8 @@
 // WeatherEmojis.ts
 
 type EmojiMap = {
-  [key: string]: string;
-};
+  [key: string]: string
+}
 
 const WeatherEmojis: EmojiMap = {
   'Thunderstorm': '⛈️',
@@ -20,6 +20,6 @@ const WeatherEmojis: EmojiMap = {
   'Ash': '💨',
   'Squall': '🌬️',
   'Tornado': '🌪️',
-};
+}
 
-export default WeatherEmojis;
+export default WeatherEmojis

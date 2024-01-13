@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 
 const BackgroundImage = ({ imageUrls, interval }) => {
-    const [currentImage, setCurrentImage] = useState(0);
+    const [currentImage, setCurrentImage] = useState(0)
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setCurrentImage((prevImage) => (prevImage + 1) % imageUrls.length);
-        }, interval * 60000);
+            setCurrentImage((prevImage) => (prevImage + 1) % imageUrls.length)
+        }, interval * 60000)
 
-        return () => clearInterval(timer);
-    }, [imageUrls, interval]);
+        return () => clearInterval(timer)
+    }, [imageUrls, interval])
 
     return (
         <div>
@@ -27,7 +27,7 @@ const BackgroundImage = ({ imageUrls, interval }) => {
                 }} 
             />
         </div>
-    );
-};
+    )
+}
 
-export default BackgroundImage;
+export default BackgroundImage
