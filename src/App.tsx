@@ -7,6 +7,7 @@ import SoberCounter from './components/SoberCounter'
 import Calendar from './components/Calendar'
 import { TopGradient, BottomGradient } from './components/Gradients'
 import React from 'react'
+import PlexMonitor from './components/PlexMonitor'
 
 const imageUrls = [
   'https://upload.wikimedia.org/wikipedia/commons/8/8d/Frog_on_palm_frond.jpg',
@@ -34,6 +35,9 @@ function App() {
           <Col span={6}>
             <Weather />
           </Col>
+        </Row>
+        <Row>
+          <PlexMonitor />
         </Row>
         <Row>
           <Col>
