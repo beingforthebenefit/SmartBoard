@@ -1,5 +1,5 @@
 import './App.css'
-import { Grid, NextUIProvider, Col, Row, Divider } from '@nextui-org/react'
+import { Grid, NextUIProvider } from '@nextui-org/react'
 import Clock from './components/Clock'
 import Weather from './components/Weather'
 import BackgroundImage from './components/BackgroundImage'
@@ -14,7 +14,7 @@ const imageUrls = [
   'https://upload.wikimedia.org/wikipedia/commons/3/3b/Downtown_Chicago_Marina_City_CornCob_Sky_Scrapers.jpg',
   'https://i.insider.com/6340783eb3e94d0019781b4e?width=1300&format=jpeg&auto=webp',
 ]
-const imageInterval = .1 // change image every 5 minutes
+const imageInterval = 5 // change image every 5 minutes
 const icsUrls = [
   "https://p55-caldav.icloud.com/published/2/MTAwMTA1MDY5OTEwMDEwNcR_tgzPDCleovZiKwbmEvqLNmZR2Q-8uMi3IcW12_UH",
   "https://p40-caldav.icloud.com/published/2/Mjc4NDM4OTA3Mjc4NDM4OYtGMLx1oo-hpjvxzsl8_VcgsVNXw4ETUlzBSsVLaG9u_nqSNqTBLJo3W2DiyRgi-2B2DgS80R1FUz-CSGuOylI"
@@ -25,25 +25,30 @@ function App() {
     <NextUIProvider>
       <TopGradient />
       <BackgroundImage imageUrls={imageUrls} interval={imageInterval} />
-      <Grid.Container direction="column" justify="space-between" style={{height: "100vh"}}>
-        <Row>
-          <Col span={6}>
-            <Clock />
-            <Divider y={2} />
-            <SoberCounter />
-          </Col>
-          <Col span={6}>
-            <Weather />
-          </Col>
-        </Row>
-        <Row>
-          <PlexMonitor />
-        </Row>
-        <Row>
-          <Col>
-            <Calendar icsUrls={icsUrls} />
-          </Col>
-        </Row>
+      <Grid.Container gap={2} direction="column" justify="space-between" style={{ height: "100vh" }}>
+        {/* Top Section */}
+        <Grid.Container justify="space-between" alignItems="flex-start" wrap="wrap">
+          <Grid xs={12} sm={6}>
+            <div className="left-column">
+              <Weather />
+              <SoberCounter />
+            </div>
+          </Grid>
+          <Grid xs={12} sm={6}>
+            <div className="right-column">
+              <Clock />
+              <PlexMonitor />
+            </div>
+          </Grid>
+        </Grid.Container>
+        {/* Bottom Left Section for Calendar */}
+        <Grid xs={12} sm={6} className="bottom-left-section">
+          <Calendar icsUrls={icsUrls} />
+        </Grid>
+        {/* Bottom Right Section for PlexMonitor */}
+        <Grid xs={12} sm={6} className="bottom-right-section">
+          {/* <PlexMonitor type="unwatchedMovies" /> */}
+        </Grid>
       </Grid.Container>
       <BottomGradient />
     </NextUIProvider>
