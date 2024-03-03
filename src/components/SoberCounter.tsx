@@ -1,18 +1,13 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import React from 'react'
 import { Text, Grid, Card } from '@nextui-org/react'
+import useTimePassed from './hooks/useTimePassed'
 
 const SoberCounter = () => {
-  const soberDate = useMemo(() => new Date('2022-07-19 22:57:00'), [])
-  const [timePassed, setTimePassed] = useState(Date.now() - soberDate.getTime())
+  const soberDate = new Date('2022-07-19 22:57:00')
+  const timePassed = useTimePassed(soberDate)
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimePassed(Date.now() - soberDate.getTime())
-    }, 1000)
-    return () => clearInterval(timer)
-  }, [soberDate])
-
-  const calculateTime = (startDate: Date, currentDate: Date) => {
+  const calculateTime = (startDate: Date) => {
+    const currentDate = new Date()
     let years = currentDate.getFullYear() - startDate.getFullYear()
     let months = currentDate.getMonth() - startDate.getMonth()
     let days = currentDate.getDate() - startDate.getDate()
@@ -28,12 +23,13 @@ const SoberCounter = () => {
       months += 12
     }
 
-    return { years, months, days }
+    const totalHours = Math.floor(timePassed / (1000 * 60 * 60))
+    const hours = totalHours % 24
+
+    return { years, months, days, hours }
   }
 
-  const { years, months, days } = calculateTime(soberDate, new Date())
-
-  const hours = Math.floor(timePassed / (1000 * 60 * 60)) % 24
+  const { years, months, days, hours } = calculateTime(soberDate)
 
   return (
     <div>
@@ -60,7 +56,7 @@ const SoberCounter = () => {
         <Grid xs={24} sm={3}>
           <Card>
             <Text h4 style={{textAlign: 'center'}}>{hours}</Text>
-            <Text style={{textAlign: 'center'}}>{hours > 1 ? 'Hours' : 'Hours'}</Text>
+            <Text style={{textAlign: 'center'}}>{hours > 1 ? 'Hours' : 'Hour'}</Text>
           </Card>
         </Grid>
       </Grid.Container>
