@@ -1,49 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Container, Grid, Card, Text, Divider, Row } from '@nextui-org/react'
-import axios from 'axios'
-import moment from 'moment'
+import useWeather from './hooks/useWeather'
 import WeatherEmojis from './WeatherEmojis'
-
-const API_KEY = process.env.REACT_APP_OPEN_WEATHER_MAP_API_KEY
-const API_URL = `${process.env.REACT_APP_OPEN_WEATHER_MAP_API_URL}?lat=37.7749&lon=-122.4194&exclude=minutely,alerts&appid=${API_KEY}&units=imperial`
-
-type WeatherData = {
-  current: {
-    temp: number
-    weather: [{ main: string }]
-  }
-  daily: [
-    {
-      dt: number
-      temp: {
-        min: number
-        max: number
-      }
-      weather: [{ main: string }]
-    }
-  ]
-} | null
+import moment from 'moment'
 
 const Weather = () => {
-  const [weatherData, setWeatherData] = useState<WeatherData>(null)
+  const { weatherData, loading, error } = useWeather()
 
-  useEffect(() => {
-    axios.get(API_URL)
-      .then(res => {
-        const processedData = {
-          current: res.data.current,
-          daily: res.data.daily.slice(0, 5)
-        }
-        setWeatherData(processedData)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }, [])
-
-  if (!weatherData) {
-    return <p>Loading...</p>
-  }
+  if (loading) return <Text>Loading...</Text>
+  if (error) return <Text>Error: {error.message}</Text>
+  if (!weatherData) return <Text>No weather data</Text>
 
   return (
     <Container className='weatherContainer'>
