@@ -12,19 +12,19 @@ const BackgroundImage = ({ imageUrls, interval }) => {
     }, [imageUrls, interval])
 
     return (
-        <div>
-            <div 
-                className="background-image" 
-                style={{ 
+        <div className="background-image-wrapper">
+            <div
+                className="background-image"
+                style={{
                     backgroundImage: `url(${imageUrls[currentImage]})`,
-                    filter: 'blur(15px) brightness(60%)',
-                }} 
+                    filter: 'blur(15px) brightness(60%)'
+                }}
             />
-            <div 
-                className="foreground-image" 
-                style={{ 
-                    backgroundImage: `url(${imageUrls[currentImage]})`,
-                }} 
+            <div
+                className="foreground-image"
+                style={{
+                    backgroundImage: `url(${imageUrls[currentImage]})`
+                }}
             />
         </div>
     )
