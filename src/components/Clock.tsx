@@ -1,22 +1,48 @@
+// components/Clock.tsx
 import React, { useState, useEffect } from 'react'
-import { Text } from '@nextui-org/react'
 
-const Clock = () => {
-    const [time, setTime] = useState(new Date())
+const Clock: React.FC = () => {
+  const [time, setTime] = useState(new Date())
 
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setTime(new Date())
-        }, 1000)
-        return () => clearInterval(timer)
-    }, [])
+  useEffect(() => {
+    const timerId = setInterval(() => tick(), 1000)
+    return () => {
+      clearInterval(timerId)
+    }
+  }, [])
 
-    return (
-        <div className="clock-wrapper">
-            <Text h1>{time.toLocaleTimeString()}</Text>
-            <Text h2>{time.toDateString()}</Text>
-        </div>
-    )
+  const tick = () => {
+    setTime(new Date())
+  }
+
+  const addZero = (i: number) => {
+    var n = i.toString()
+    if (i < 10) {
+      n = "0" + i
+    }
+    return n
+  }
+
+  const formatTime = (date: Date) => {
+    let hours = date.getHours()
+    let minutes = addZero(date.getMinutes())
+    let seconds = addZero(date.getSeconds())
+    return `${hours}:${minutes}:${seconds}`
+  }
+
+  const formatDate = (date: Date) => {
+    const day = addZero(date.getDate())
+    const month = addZero(date.getMonth() + 1)
+    const year = date.getFullYear()
+    return `${month}/${day}/${year}`
+  }
+
+  return (
+    <div className="clock-container">
+      <div className="time">{formatTime(time)}</div>
+      <div className="date">{formatDate(time)}</div>
+    </div>
+  )
 }
 
 export default Clock
