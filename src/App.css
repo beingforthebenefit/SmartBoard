@@ -37,6 +37,26 @@
   }
 }
 
+.left-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center; /* Align items to the start of the left column */
+  padding: 1rem;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end; /* Align items to the end of the right column */
+  padding: 1rem;
+}
+
+.bottom-left-section, .bottom-right-section {
+  padding: 1rem;
+}
+
 .background-image, .foreground-image {
   position: fixed;
   top: 0;
@@ -59,6 +79,18 @@
   background-size: contain;
 }
 
+.clock-sober-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 1em;
+}
+
+.clock-wrapper, .sober-counter-wrapper, .weatherContainer {
+  position: relative;
+  z-index: 1;
+}
+
 .clock-wrapper {
   text-align: center;
 }
@@ -69,4 +101,47 @@
 
 .dayContainer {
   text-align: center;
+}
+
+/* components/Clock.css */
+.clock-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2em;
+  padding: 1em;
+}
+
+.time {
+  font-weight: bold;
+}
+
+.date {
+  font-size: 0.5em;
+}
+
+/* Ensure that the Grid container takes full height */
+.Grid {
+  height: 100%;
+}
+
+/* Style adjustments for the Gradients */
+.TopGradient, .BottomGradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1; /* Adjust as needed */
+}
+
+/* Make sure this class is being applied to the component */
+.background-image-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
