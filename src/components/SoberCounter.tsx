@@ -32,10 +32,10 @@ const SoberCounter = () => {
   const { years, months, days, hours } = calculateTime(soberDate)
 
   return (
-    <div>
+    <>
       <Text h3 style={{textAlign: 'center'}}>Sober Time</Text>
       <Grid.Container gap={2} justify="center">
-      <Grid xs={24} sm={3}>
+        <Grid xs={24} sm={3}>
           <Card>
             <Text h4 style={{textAlign: 'center'}}>{years}</Text>
             <Text style={{textAlign: 'center'}}>{years > 1 ? 'Years' : 'Year'}</Text>
@@ -60,7 +60,7 @@ const SoberCounter = () => {
           </Card>
         </Grid>
       </Grid.Container>
-    </div>
+    </>
   )
 }
 

@@ -23,48 +23,65 @@ type Session = {
 }
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: left;
-    justify-content: center;
-    margin: 10px;
-    background: rgba(49, 46, 46, 0.5);
-    border-radius: 10px;
-    padding: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  margin: 10px;
+  background: rgba(49, 46, 46, 0.5);
+  border-radius: 10px;
+  padding: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden; // Prevents content from spilling out
 `
 
 const TitleContainer = styled.div`
-    flex: 1;
-    padding: 10px;
-    text-align: center;
+  padding: 10px;
+  text-align: center;
 `
 
 const CountsContainer = styled.div`
-    flex: 1;
-    padding: 10px;
-    text-align: center;
-    color: white;
+  display: flex;
+  justify-content: space-around; // Spreads out the items
+  flex-wrap: wrap; // Allows items to wrap to the next line on smaller screens
+  padding: 10px;
+  color: white;
 `
 
 const Content = styled.div`
-    flex: 1;
-    padding: 10px;
-    text-align: center;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  text-align: center;
+  overflow-y: auto; // Allows scrolling for overflow content
 `
 
 const Item = styled.div`
-    display: flex;
-    align-items: center;
-    background: rgba(49, 46, 46, 0.5); /* Partially opaque background */
-    border-radius: 10px;
-    margin: 10px;
-    padding: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: rgba(49, 46, 46, 0.5);
+  border-radius: 10px;
+  margin: 10px 0; // Only vertical margin
+  padding: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%; // Ensure items do not exceed their container's width
+`
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  justify-content: start;
+  width: 100%;
+  max-width: 300px;
 `
 
 const ItemInfo = styled.div`
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 `
 
 const PlexMonitor = () => {
@@ -89,45 +106,47 @@ const PlexMonitor = () => {
       return response.data
     }
   
-    const initiateDataFetch = async () => {
-        try {
-            // Fetch and set library counts
-            const moviesResponse = await fetchData('/library/sections/1/all')
-            const movieCount = moviesResponse?.MediaContainer?.size
-            const tvShowsResponse = await fetchData('/library/sections/2/all')
-            const tvShowCount = tvShowsResponse?.MediaContainer?.size
-            setLibraryCounts({ Movies: movieCount, 'TV Shows': tvShowCount })
-
-            // Fetch and process current sessions
-            const sessionsResponse = await fetchData('/status/sessions')
-            const videos = sessionsResponse.MediaContainer.Metadata
-            const processedSessions: Session[] = videos.map(video => {
-                const session: Partial<Session> = {
-                    artUrl: video.art,
-                    title: video.title,
-                    type: video.type,
-                    user: video.User.title,
-                    year: video.year,
-                    duration: video.duration,
-                    viewOffset: video.viewOffset,
-                    state: video.Player.state
-                }
-
-                if (session.type === 'episode') {
-                    session.grandparentTitle = video.grandparentTitle
-                    session.seasonNumber = video.parentIndex
-                    session.episodeNumber = video.index
-                }
-
-                return session as Session
-            })
-            setSessions(processedSessions)
-        } catch (error) {
-            console.error('Error fetching data from Plex:', error)
-        }
-    }
+    
   
     useEffect(() => {
+      const initiateDataFetch = async () => {
+        try {
+          // Fetch and set library counts
+          const moviesResponse = await fetchData('/library/sections/1/all')
+          const movieCount = moviesResponse?.MediaContainer?.size
+          const tvShowsResponse = await fetchData('/library/sections/2/all')
+          const tvShowCount = tvShowsResponse?.MediaContainer?.size
+          setLibraryCounts({ Movies: movieCount, 'TV Shows': tvShowCount })
+
+          // Fetch and process current sessions
+          const sessionsResponse = await fetchData('/status/sessions')
+          const videos = sessionsResponse.MediaContainer.Metadata
+          const processedSessions: Session[] = videos.map(video => {
+            const session: Partial<Session> = {
+              artUrl: video.type === 'movie' ? video.thumb : video.parentThumb,
+              title: video.title,
+              type: video.type,
+              user: video.User.title,
+              year: video.year,
+              duration: video.duration,
+              viewOffset: video.viewOffset,
+              state: video.Player.state
+            }
+
+            if (session.type === 'episode') {
+              session.grandparentTitle = video.grandparentTitle
+              session.seasonNumber = video.parentIndex
+              session.episodeNumber = video.index
+            }
+
+            return session as Session
+          })
+          setSessions(processedSessions)
+        } catch (error) {
+          console.error('Error fetching data from Plex:', error)
+        }
+      }
+
       initiateDataFetch()
       const interval = setInterval(initiateDataFetch, 60000)
       return () => clearInterval(interval)
@@ -146,24 +165,28 @@ const PlexMonitor = () => {
           <Content>
             {sessions.map((session, index) => (
               <Item key={index}>
-                <img src={`${BASE_URL}${session.artUrl}?X-Plex-Token=${PLEX_TOKEN}`} alt={session.title} />
+                <img className="thumbnail" src={`${BASE_URL}${session.artUrl}?X-Plex-Token=${PLEX_TOKEN}`} alt={session.title} />
                 <ItemInfo>
                   {session.type === 'episode' ? (
-                    <>
+                    <Row>
                       <div dangerouslySetInnerHTML={{ __html: titleIconSVG }} />
                       <span>{session.grandparentTitle}</span>
                       <span>S{session.seasonNumber} E{session.episodeNumber}: {session.title}</span>
-                    </>
+                    </Row>
                   ) : (
-                    <>
+                    <Row>
                       <div dangerouslySetInnerHTML={{ __html: titleIconSVG }} />
                       <span>{session.title} ({session.year})</span>
-                    </>
+                    </Row>
                   )}
-                  <div dangerouslySetInnerHTML={{ __html: userIconSVG }} />
-                  <span>{session.user}</span>
-                  <div dangerouslySetInnerHTML={{ __html: session.state === 'playing' ? playIconSVG : pauseIconSVG }} />
-                  <span>{session.state === 'playing' ? 'Playing' : 'Paused'}</span>
+                  <Row>
+                    <div dangerouslySetInnerHTML={{ __html: userIconSVG }} />
+                    <span>{session.user}</span>
+                  </Row>
+                  <Row>
+                    <div dangerouslySetInnerHTML={{ __html: session.state === 'playing' ? playIconSVG : pauseIconSVG }} />
+                    <span>{session.state === 'playing' ? 'Playing' : 'Paused'}</span>
+                  </Row>
                   <div className="progress-bar" style={{ width: `${(session.viewOffset / session.duration) * 100}%` }}></div>
                 </ItemInfo>
               </Item>

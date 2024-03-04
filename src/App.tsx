@@ -28,25 +28,26 @@ function App() {
       <Grid.Container gap={2} direction="column" justify="space-between" style={{ height: "100vh" }}>
         {/* Top Section */}
         <Grid.Container justify="space-between" alignItems="flex-start" wrap="wrap">
-          <Grid xs={12} sm={6}>
+          <Grid>
             <div className="left-column">
               <Weather />
               <SoberCounter />
             </div>
           </Grid>
-          <Grid xs={12} sm={6}>
+          <Grid>
             <div className="right-column">
               <Clock />
               <PlexMonitor />
             </div>
           </Grid>
         </Grid.Container>
+
         {/* Bottom Left Section for Calendar */}
-        <Grid xs={12} sm={6} className="bottom-left-section">
+        <Grid className="bottom-left-section">
           <Calendar icsUrls={icsUrls} />
         </Grid>
         {/* Bottom Right Section for PlexMonitor */}
-        <Grid xs={12} sm={6} className="bottom-right-section">
+        <Grid className="bottom-right-section">
           {/* <PlexMonitor type="unwatchedMovies" /> */}
         </Grid>
       </Grid.Container>
