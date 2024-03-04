@@ -2,6 +2,7 @@
   "name": "smart-board",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://beingforthebenefit.github.io/SmartBoard",
   "dependencies": {
     "@leecheuk/react-google-login": "^5.4.1",
     "@nextui-org/react": "^1.0.0-beta.13",
